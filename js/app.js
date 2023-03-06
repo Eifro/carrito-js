@@ -33,8 +33,16 @@ function leerDatosCurso(curso)
         precio: curso.querySelector('.info-card .precio span').textContent,
         cantidad: 1
     }
-    productosCarrito = [...productosCarrito, datosCurso] // spread operator para hacer referencia anterior del array
-    console.log(productosCarrito)
+    const repite = productosCarrito.some(curso => curso.id === datosCurso.id) // validar si un curso repite id
+    if (repite) {
+        const cursos = productosCarrito.map(curso => { // retorna nuevo array con cantidad actualizada
+            if (curso.id === datosCurso.id) curso.cantidad++
+            return curso
+        })
+        productosCarrito = [...cursos]
+    } else {
+        productosCarrito = [...productosCarrito, datosCurso] // spread operator, hace referencia anterior del array
+    }
     mostrarCursoCarrito(productosCarrito)
 }
 
