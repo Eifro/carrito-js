@@ -11,6 +11,11 @@ eventListeners()
 function eventListeners()
 {
     listaCursos.addEventListener('click', agregarCurso) // agregar curso
+    carrito.addEventListener('click', eliminarCurso) // eliminar un curso
+    limpiarCarritoBtn.addEventListener('click', () => { // limpiar carrito usando función anónima
+        productosCarrito = []
+        limpiarCarrito()
+    })
 }
 
 
@@ -39,7 +44,7 @@ function leerDatosCurso(curso)
             if (curso.id === datosCurso.id) curso.cantidad++
             return curso
         })
-        productosCarrito = [...cursos]
+        productosCarrito = [...cursos] // copia del valor de curso actualizado
     } else {
         productosCarrito = [...productosCarrito, datosCurso] // spread operator, hace referencia anterior del array
     }
@@ -61,7 +66,7 @@ function mostrarCursoCarrito(cursos)
                 <td>${precio}</td>
                 <td>${cantidad}</td>
                 <td>
-                    <a href="#" class="borrar-curso" data-id=="${id}">X</a>
+                    <a href="#" class="borrar-curso" data-id="${id}">X</a>
                 </td>
             </tr>
         ` 
@@ -72,5 +77,15 @@ function limpiarCarrito()
 {
     while(carritoBody.firstChild) {
         carritoBody.removeChild(carritoBody.firstChild)
+    }
+}
+
+function eliminarCurso(e)
+{
+    e.preventDefault()
+    if (e.target.classList.contains('borrar-curso')) {  
+        const cursoId = e.target.getAttribute('data-id') // obtener id del curso a eliminar
+        productosCarrito = productosCarrito.filter(curso => curso.id !== cursoId) // filtra por una condición y retorna un nuevo array
+        mostrarCursoCarrito(productosCarrito)
     }
 }
